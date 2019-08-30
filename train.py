@@ -35,6 +35,9 @@ from ssdvgg import SSDVGG
 from utils import *
 from tqdm import tqdm
 
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
+sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
+
 if sys.version_info[0] < 3:
     print("This is a Python 3 program. Use Python 3 or higher.")
     sys.exit(1)
