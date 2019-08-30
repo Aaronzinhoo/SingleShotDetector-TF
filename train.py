@@ -57,6 +57,8 @@ def main():
     parser = argparse.ArgumentParser(description='Train the SSD')
     parser.add_argument('--name', default='test',
                         help='project name')
+    parser.add_argument('--gpu' , type = bool,default=True , 
+                        help='gpu visibility to env')
     parser.add_argument('--data-dir', default='pascal-voc',
                         help='data directory')
     parser.add_argument('--vgg-dir', default='vgg_graph',
@@ -85,6 +87,7 @@ def main():
     args = parser.parse_args()
 
     print('[i] Project name:         ', args.name)
+    print('[i] GPU visibility        ', args.gpu)
     print('[i] Data directory:       ', args.data_dir)
     print('[i] VGG directory:        ', args.vgg_dir)
     print('[i] # epochs:             ', args.epochs)
@@ -97,6 +100,15 @@ def main():
     print('[i] Weight decay:         ', args.weight_decay)
     print('[i] Continue:             ', args.continue_training)
     print('[i] Number of workers:    ', args.num_workers)
+    
+    #---------------------------------------------
+    # Set GPU Visibility
+    #---------------------------------------------
+    if args.gpu == True:
+       gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
+       sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) 
+    else:
+        os.environ["CUDA_VISIBLE_DEVICES"]="-1"
 
     #---------------------------------------------------------------------------
     # Find an existing checkpoint
